@@ -45,7 +45,6 @@ export default {
   font-size: 15px !important;
 }
 #navbarNavAltMarkup {
-  display: flex;
   justify-content: flex-end;
   font-size: 26px;
 }
