@@ -19,6 +19,26 @@
       />
     </div>
   </div>
+  <div class="mt-5 clothes">
+    <h1>Recommended for you !</h1>
+    <div class="container" id="prodcut-img">
+      <div class="card shadow p-3 mb-5 bg-body-tertiary rounded">
+        <img src="../assets/t-shirt.png" />
+      </div>
+      <div class="card shadow p-3 mb-5 bg-body-tertiary rounded">
+        <img src="../assets/t-shirt.png" />
+      </div>
+      <div class="card shadow p-3 mb-5 bg-body-tertiary rounded">
+        <img src="../assets/t-shirt.png" />
+      </div>
+      <div class="card shadow p-3 mb-5 bg-body-tertiary rounded">
+        <img src="../assets/t-shirt.png" />
+      </div>
+      <div class="card shadow p-3 mb-5 bg-body-tertiary rounded">
+        <img src="../assets/t-shirt.png" />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -54,7 +74,15 @@ h2 {
   width: 100%;
   align-items: center;
   text-align: left;
-  height: 80% !important;
+  height: 100% !important;
+}
+.clothes {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+.clothes img {
+  border-radius: 5px;
 }
 .container img {
   width: 100%;
@@ -70,7 +98,11 @@ h2 {
   height: 50%;
 }
 /* New CSS styles */
-
+#prodcut-img {
+  display: flex;
+  justify-content: space-between;
+  width: 100% !important;
+}
 .success-starts img {
   width: 250px;
 }
