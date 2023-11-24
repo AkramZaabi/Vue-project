@@ -20,7 +20,9 @@
   <div class="mt-5 clothes">
     <h1>Recommended for you !</h1>
     <div class="container mt-5">
-      <h3>View all!</h3>
+      <router-link class="nav-link" id="h3" to="/about">
+        <h3 style="font-size: 18px">View all!</h3></router-link
+      >
     </div>
     <div class="container shadow p-3 mb-5 bg-body rounded" id="cloathing">
       <div class="row row-cols-1 row-cols-5 g-4 mb-5 mt-5 clothes-card">
@@ -83,6 +85,38 @@
       </div>
     </div>
   </div>
+  <div class="container mt-5" id="services">
+    <div style="width: 18rem" class="card-services">
+      <img src="../assets/Free shipping-bro.svg" />
+      <span class="text-center mt-2 mb-3">Free Shipping</span>
+      <p class="text-center">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla maiores
+        omnis suscipit officiis deleniti, beatae, commodi recusandae corrupti
+        rerum animi magni perferendis repellat itaque in velit saepe quis eaque
+        voluptatum?
+      </p>
+    </div>
+    <div style="width: 18rem" class="card-services">
+      <img src="../assets/Product quality-amico.svg" />
+      <span class="text-center mt-2 mb-3">Quality Product</span>
+      <p class="text-center">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla maiores
+        omnis suscipit officiis deleniti, beatae, commodi recusandae corrupti
+        rerum animi magni perferendis repellat itaque in velit saepe quis eaque
+        voluptatum?
+      </p>
+    </div>
+    <div style="width: 18rem" class="card-services">
+      <img src="../assets/Coronavirus Delivery Preventions-bro.svg" />
+      <span class="text-center mt-2 mb-3">Safe Measurements</span>
+      <p class="text-center">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla maiores
+        omnis suscipit officiis deleniti, beatae, commodi recusandae corrupti
+        rerum animi magni perferendis repellat itaque in velit saepe quis eaque
+        voluptatum?
+      </p>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -92,7 +126,7 @@ export default {
 </script>
 
 <style scoped>
-h3 {
+#h3 {
   width: 100%;
   justify-content: flex-end;
   text-align: right;
@@ -105,7 +139,7 @@ h3 {
   font-weight: bold;
   transition: 0.3s;
 }
-p {
+.card-body p {
   color: #007bff;
   border: 1px solid #007bff;
   border-radius: 15px;
@@ -123,7 +157,15 @@ button:hover {
 button span {
   font-weight: 500;
 }
-
+.card-services {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.card-services span {
+  font-size: 25px;
+  font-weight: bold;
+}
 #text-content {
   width: 50%;
   display: flex;
@@ -141,7 +183,10 @@ h2 {
   width: 50%;
   font-weight: 100;
 }
-
+#services {
+  display: flex;
+  justify-content: space-evenly;
+}
 .container {
   align-self: center;
   place-items: center;
@@ -196,7 +241,9 @@ h2 {
 .shop-now-button:hover {
   background-color: #007bff;
 }
-
+.card-title {
+  font-weight: bold;
+}
 .img-container {
   width: 40%;
   height: 50%;
