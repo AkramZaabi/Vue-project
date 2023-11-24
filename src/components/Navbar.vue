@@ -18,10 +18,8 @@
           <router-link class="nav-link active" aria-current="page" to="/"
             ><a>Home</a></router-link
           >
-          <router-link class="nav-link" to="/about"
-            ><a>Products</a></router-link
-          >
-          <a class="nav-link" href="#">About</a>
+          <router-link class="nav-link" to="/product">Products</router-link>
+          <router-link class="nav-link" to="/about">About</router-link>
         </div>
       </div>
     </div>
