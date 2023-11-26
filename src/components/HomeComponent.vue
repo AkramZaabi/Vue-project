@@ -20,7 +20,7 @@
   <div class="mt-5 clothes">
     <h1>Recommended for you !</h1>
     <div class="container mt-5">
-      <router-link class="nav-link" id="h3" to="/about">
+      <router-link class="nav-link" id="h3" to="/product">
         <h3 style="font-size: 18px">View all!</h3></router-link
       >
     </div>
