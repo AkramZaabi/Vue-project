@@ -7,9 +7,9 @@
           <div class="col" v-for="product in products" :key="product.name">
             <div class="card" style="width: 12rem">
               <img
-                :src="product.imageUrl"
+                :src="product.colors[0].imageUrl"
                 class="card-img-top"
-                :class="{ 'image-disabled': product.quantity === 0 }"
+                :class="{ 'image-disabled': product.colors[0].quantity === 0 }"
                 alt="..."
               />
               <div class="card-body text-center">
@@ -21,30 +21,34 @@
                   <button
                     class="btn btn-secondary"
                     @click="decrementQuantity(product)"
-                    :disabled="product.quantity === 0"
+                    :disabled="product.colors[0].quantity === 0"
                   >
                     -
                   </button>
-                  <span class="quantity">{{ product.quantity }}</span>
+                  <span class="quantity">{{ product.colors[0].quantity }}</span>
                   <button
                     class="btn btn-secondary"
                     @click="incrementQuantity(product)"
-                    :disabled="product.quantity === initialProductQuantity"
+                    :disabled="
+                      product.colors[0].quantity === initialProductQuantity
+                    "
                   >
                     +
                   </button>
                 </div>
                 <button
                   class="btn btn-primary"
-                  @click="addToCart(product)"
-                  :disabled="product.quantity === 0"
+                  @click="addToCart(product, product.colors[0].name)"
+                  :disabled="product.colors[0].quantity === 0"
                 >
                   Buy
                 </button>
                 <button
                   class="btn btn-danger"
                   @click="removeFromCart(product)"
-                  :disabled="product.quantity === initialProductQuantity"
+                  :disabled="
+                    product.colors[0].quantity === initialProductQuantity
+                  "
                 >
                   Remove
                 </button>
@@ -68,18 +72,110 @@ export default {
       initialProductQuantity: 5,
       products: [
         {
+          id: 1,
           name: "T-shirt Super Mario",
           description: "T-shirt avec la photo de Mario",
           price: 50,
-          imageUrl: require("../assets/t-shirt.png"),
-          quantity: 5,
+          colors: [
+            {
+              name: "Green",
+              imageUrl: require("../assets/Free_T-Shirt_Mockup_1.png"),
+              quantity: 5,
+            },
+            {
+              name: "Blue and Green",
+              imageUrl: require("../assets/Free_T-Shirt_Mockup_2.png"),
+              quantity: 3,
+            },
+            {
+              name: "Blue",
+              imageUrl: require("../assets/Free_T-Shirt_Mockup_3.png"),
+              quantity: 4,
+            },
+            {
+              name: "Black",
+              imageUrl: require("../assets/Free_T-Shirt_Mockup_4.png"),
+              quantity: 3,
+            },
+          ],
+          category: "T-shirts",
         },
         {
-          name: "Hoodie Zelda",
-          description: "Hoodie featuring the iconic Zelda logo",
-          price: 65,
-          imageUrl: require("../assets/t-shirt.png"),
-          quantity: 10,
+          id: 2,
+          name: "Sweatshirt Super Mario",
+          description: "Capuche avec la photo de Mario",
+          price: 120,
+          colors: [
+            {
+              name: "Black",
+              imageUrl: require("../assets/Free_Sweatshirt_Mockup_1.png"),
+              quantity: 5,
+            },
+            {
+              name: "Green",
+              imageUrl: require("../assets/Free_Sweatshirt_Mockup_2.png"),
+              quantity: 3,
+            },
+            {
+              name: "Blue",
+              imageUrl: require("../assets/Free_Sweatshirt_Mockup_3.png"),
+              quantity: 4,
+            },
+            {
+              name: "Green and Blue",
+              imageUrl: require("../assets/Free_Sweatshirt_Mockup_4.png"),
+              quantity: 3,
+            },
+          ],
+          category: "Sweatshirts",
+        },
+        {
+          id: 3,
+          name: "Pants",
+          description: "The best stylish Pants of our collection",
+          price: 120,
+          colors: [
+            {
+              name: "green",
+              imageUrl: require("../assets/wepik-export-20231130153612t832-removebg-preview.png"),
+              quantity: 5,
+            },
+            {
+              name: "Black",
+              imageUrl: require("../assets/wepik-export-20231130153236pBWo-removebg-preview.png"),
+              quantity: 3,
+            },
+            {
+              name: "Purple",
+              imageUrl: require("../assets/wepik-export-202311301533220JYe-removebg-preview.png"),
+              quantity: 4,
+            },
+          ],
+          category: "Pants",
+        },
+        {
+          id: 4,
+          name: "Shoes",
+          description: "The best shoes of our collection",
+          price: 200,
+          colors: [
+            {
+              name: "Beige",
+              imageUrl: require("../assets/wepik-export-20231130154138SkMQ-removebg-preview.png"),
+              quantity: 5,
+            },
+            {
+              name: "Green",
+              imageUrl: require("../assets/wepik-export-202311301542190PSW-removebg-preview.png"),
+              quantity: 3,
+            },
+            {
+              name: "Silver",
+              imageUrl: require("../assets/wepik-export-20231130155202wYmn-removebg-preview.png"),
+              quantity: 4,
+            },
+          ],
+          category: "Shoes",
         },
       ],
       cart: [],
@@ -90,33 +186,102 @@ export default {
       return this.cart.length;
     },
     cartTotal() {
-      return this.cart.reduce((total, product) => total + product.price, 0);
+      return this.cart.reduce(
+        (total, product) => total + product.price * product.quantity,
+        0
+      );
     },
   },
   methods: {
-    addToCart(product) {
-      if (product.quantity > 0) {
-        this.cart.push({ ...product, quantity: 1 });
-        product.quantity--;
+    addToCart(product, color) {
+      const selectedColor = product.colors.find((c) => c.name === color);
+
+      if (selectedColor && selectedColor.quantity > 0) {
+        const cartProduct = {
+          ...product,
+          color: selectedColor.name,
+          imageUrl: selectedColor.imageUrl,
+          quantity: 1,
+        };
+
+        this.cart.push(cartProduct);
+        selectedColor.quantity--;
+
+        this.updateLocalStorage(cartProduct, true);
       }
     },
     removeFromCart(product) {
-      const index = this.cart.findIndex((p) => p.name === product.name);
+      const index = this.cart.findIndex((p) => p.id === product.id);
       if (index !== -1) {
-        this.cart.splice(index, 1);
-        product.quantity++;
+        const removedProduct = this.cart.splice(index, 1)[0];
+        const selectedColor = product.colors.find(
+          (c) => c.name === removedProduct.color
+        );
+
+        if (selectedColor) {
+          selectedColor.quantity += removedProduct.quantity;
+        }
+
+        this.updateLocalStorage(product, false);
       }
     },
     incrementQuantity(product) {
-      if (product.quantity < this.initialProductQuantity) {
-        product.quantity++;
+      if (product.colors[0].quantity < this.initialProductQuantity) {
+        product.colors[0].quantity++;
+        this.updateLocalStorage(product, true);
       }
     },
     decrementQuantity(product) {
-      if (product.quantity > 0) {
-        product.quantity--;
+      if (product.colors[0].quantity > 0) {
+        product.colors[0].quantity--;
+        this.updateLocalStorage(product, false);
       }
     },
+    updateLocalStorage(product, isAdding) {
+      const savedCart = JSON.parse(localStorage.getItem("cart")) || [];
+      const index = savedCart.findIndex(
+        (p) => p.id === product.id && p.color === product.colors[0].name
+      );
+
+      if (index !== -1) {
+        if (isAdding) {
+          savedCart[index].quantity += 1;
+        } else {
+          savedCart.splice(index, 1);
+        }
+      } else if (isAdding) {
+        savedCart.push({
+          id: product.id,
+          color: product.colors[0].name,
+          quantity: 1,
+        });
+      }
+
+      localStorage.setItem("cart", JSON.stringify(savedCart));
+    },
+    loadCartFromLocalStorage() {
+      const savedCart = JSON.parse(localStorage.getItem("cart")) || [];
+      for (const item of savedCart) {
+        const product = this.products.find((p) => p.id === item.id);
+        if (product) {
+          const selectedColor = product.colors.find(
+            (c) => c.name === item.color
+          );
+          if (selectedColor && selectedColor.quantity > 0) {
+            this.cart.push({
+              ...product,
+              color: selectedColor.name,
+              imageUrl: selectedColor.imageUrl,
+              quantity: item.quantity,
+            });
+            selectedColor.quantity -= item.quantity;
+          }
+        }
+      }
+    },
+  },
+  mounted() {
+    this.loadCartFromLocalStorage();
   },
 };
 </script>
