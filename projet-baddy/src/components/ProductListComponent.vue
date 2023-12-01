@@ -7,9 +7,9 @@
           <div class="col" v-for="product in products" :key="product.name">
             <div class="card" style="width: 12rem">
               <img
-                :src="product.imageUrl"
+                :src="product.colors[0].imageUrl"
                 class="card-img-top"
-                :class="{ 'image-disabled': product.quantity === 0 }"
+                :class="{ 'image-disabled': product.colors[0].quantity === 0 }"
                 alt="..."
               />
               <div class="card-body text-center">
@@ -21,30 +21,34 @@
                   <button
                     class="btn btn-secondary"
                     @click="decrementQuantity(product)"
-                    :disabled="product.quantity === 0"
+                    :disabled="product.colors[0].quantity === 0"
                   >
                     -
                   </button>
-                  <span class="quantity">{{ product.quantity }}</span>
+                  <span class="quantity">{{ product.colors[0].quantity }}</span>
                   <button
                     class="btn btn-secondary"
                     @click="incrementQuantity(product)"
-                    :disabled="product.quantity === initialProductQuantity"
+                    :disabled="
+                      product.colors[0].quantity === initialProductQuantity
+                    "
                   >
                     +
                   </button>
                 </div>
                 <button
                   class="btn btn-primary"
-                  @click="addToCart(product)"
-                  :disabled="product.quantity === 0"
+                  @click="addToCart(product, product.colors[0].name)"
+                  :disabled="product.colors[0].quantity === 0"
                 >
                   Buy
                 </button>
                 <button
                   class="btn btn-danger"
                   @click="removeFromCart(product)"
-                  :disabled="product.quantity === initialProductQuantity"
+                  :disabled="
+                    product.colors[0].quantity === initialProductQuantity
+                  "
                 >
                   Remove
                 </button>
@@ -61,62 +65,132 @@
 </template>
 
 <script>
+import ProductService from "@/services/ProductService.js";
 export default {
   name: "ProductListComponent",
   data() {
     return {
       initialProductQuantity: 5,
-      products: [
-        {
-          name: "T-shirt Super Mario",
-          description: "T-shirt avec la photo de Mario",
-          price: 50,
-          imageUrl: require("../assets/t-shirt.png"),
-          quantity: 5,
-        },
-        {
-          name: "Hoodie Zelda",
-          description: "Hoodie featuring the iconic Zelda logo",
-          price: 65,
-          imageUrl: require("../assets/t-shirt.png"),
-          quantity: 10,
-        },
-      ],
+      products: null,
       cart: [],
     };
+  },
+  async created() {
+    ProductService.getProducts()
+      .then((response) => {
+        this.products = response.data;
+        for (let i = 0; i < this.products.length; i++) {
+          for (let j = 0; j < this.products[i].colors.length; j++) {
+            this.products[i].colors[j].imageUrl = require("../assets/" +
+              this.products[i].colors[j].imageUrl);
+          }
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   },
   computed: {
     cartCount() {
       return this.cart.length;
     },
     cartTotal() {
-      return this.cart.reduce((total, product) => total + product.price, 0);
+      return this.cart.reduce(
+        (total, product) => total + product.price * product.quantity,
+        0
+      );
     },
   },
   methods: {
-    addToCart(product) {
-      if (product.quantity > 0) {
-        this.cart.push({ ...product, quantity: 1 });
-        product.quantity--;
+    addToCart(product, color) {
+      const selectedColor = product.colors.find((c) => c.name === color);
+
+      if (selectedColor && selectedColor.quantity > 0) {
+        const cartProduct = {
+          ...product,
+          color: selectedColor.name,
+          imageUrl: selectedColor.imageUrl,
+          quantity: 1,
+        };
+
+        this.cart.push(cartProduct);
+        selectedColor.quantity--;
+
+        this.updateLocalStorage(cartProduct, true);
       }
     },
     removeFromCart(product) {
-      const index = this.cart.findIndex((p) => p.name === product.name);
+      const index = this.cart.findIndex((p) => p.id === product.id);
       if (index !== -1) {
-        this.cart.splice(index, 1);
-        product.quantity++;
+        const removedProduct = this.cart.splice(index, 1)[0];
+        const selectedColor = product.colors.find(
+          (c) => c.name === removedProduct.color
+        );
+
+        if (selectedColor) {
+          selectedColor.quantity += removedProduct.quantity;
+        }
+
+        this.updateLocalStorage(product, false);
       }
     },
     incrementQuantity(product) {
-      if (product.quantity < this.initialProductQuantity) {
-        product.quantity++;
+      if (product.colors[0].quantity < this.initialProductQuantity) {
+        product.colors[0].quantity++;
+        this.updateLocalStorage(product, true);
       }
     },
     decrementQuantity(product) {
-      if (product.quantity > 0) {
-        product.quantity--;
+      if (product.colors[0].quantity > 0) {
+        product.colors[0].quantity--;
+        this.updateLocalStorage(product, false);
       }
     },
+    updateLocalStorage(product, isAdding) {
+      const savedCart = JSON.parse(localStorage.getItem("cart")) || [];
+      const index = savedCart.findIndex(
+        (p) => p.id === product.id && p.color === product.colors[0].name
+      );
+
+      if (index !== -1) {
+        if (isAdding) {
+          savedCart[index].quantity += 1;
+        } else {
+          savedCart.splice(index, 1);
+        }
+      } else if (isAdding) {
+        savedCart.push({
+          id: product.id,
+          color: product.colors[0].name,
+          quantity: 1,
+        });
+      }
+
+      localStorage.setItem("cart", JSON.stringify(savedCart));
+    },
+    loadCartFromLocalStorage() {
+      const savedCart = JSON.parse(localStorage.getItem("cart")) || [];
+      for (const item of savedCart) {
+        const product = this.products.find((p) => p.id === item.id);
+        if (product) {
+          const selectedColor = product.colors.find(
+            (c) => c.name === item.color
+          );
+          if (selectedColor && selectedColor.quantity > 0) {
+            this.cart.push({
+              ...product,
+              color: selectedColor.name,
+              imageUrl: selectedColor.imageUrl,
+              quantity: item.quantity,
+            });
+            selectedColor.quantity -= item.quantity;
+          }
+        }
+      }
+    },
+  },
+  mounted() {
+    this.loadCartFromLocalStorage();
   },
 };
 </script>
@@ -151,9 +225,9 @@ export default {
   transform: scale(1.05);
 }
 
-.card img {
+.photos img {
   width: 100%;
-  height: auto;
+  height: 20% !important;
   border-radius: 5px;
 }
 
