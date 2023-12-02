@@ -30,7 +30,8 @@
                     class="btn btn-secondary"
                     @click="incrementQuantity(product)"
                     :disabled="
-                      product.colors[0].quantity === initialProductQuantity
+                      product.colors[0].quantity === initialProductQuantity ||
+                      product.colors[0].quantity === 0
                     "
                   >
                     +
@@ -38,7 +39,7 @@
                 </div>
                 <button
                   class="btn btn-primary"
-                  @click="addToCart(product, product.colors[0].name)"
+                  @click="addToCart(product)"
                   :disabled="product.colors[0].quantity === 0"
                 >
                   Buy
@@ -65,31 +66,121 @@
 </template>
 
 <script>
-import ProductService from "@/services/ProductService.js";
-
 export default {
   name: "ProductListComponent",
   data() {
     return {
       initialProductQuantity: 5,
-      products: null,
+      products: [
+        {
+          id: 1,
+          name: "T-shirt Super Mario",
+          description: "T-shirt avec la photo de Mario",
+          price: 50,
+          colors: [
+            {
+              name: "Green",
+              imageUrl: require("../assets/Free_T-Shirt_Mockup_1.png"),
+              quantity: 5,
+            },
+            {
+              name: "Blue and Green",
+              imageUrl: require("../assets/Free_T-Shirt_Mockup_2.png"),
+              quantity: 3,
+            },
+            {
+              name: "Blue",
+              imageUrl: require("../assets/Free_T-Shirt_Mockup_3.png"),
+              quantity: 4,
+            },
+            {
+              name: "Black",
+              imageUrl: require("../assets/Free_T-Shirt_Mockup_4.png"),
+              quantity: 3,
+            },
+          ],
+          category: "T-shirts",
+        },
+        {
+          id: 2,
+          name: "Sweatshirt Super Mario",
+          description: "Capuche avec la photo de Mario",
+          price: 120,
+          colors: [
+            {
+              name: "Black",
+              imageUrl: require("../assets/Free_Sweatshirt_Mockup_1.png"),
+              quantity: 5,
+            },
+            {
+              name: "Green",
+              imageUrl: require("../assets/Free_Sweatshirt_Mockup_2.png"),
+              quantity: 3,
+            },
+            {
+              name: "Blue",
+              imageUrl: require("../assets/Free_Sweatshirt_Mockup_3.png"),
+              quantity: 4,
+            },
+            {
+              name: "Green and Blue",
+              imageUrl: require("../assets/Free_Sweatshirt_Mockup_4.png"),
+              quantity: 3,
+            },
+          ],
+          category: "Sweatshirts",
+        },
+        {
+          id: 3,
+          name: "Pants",
+          description: "The best stylish Pants of our collection",
+          price: 120,
+          colors: [
+            {
+              name: "green",
+              imageUrl: require("../assets/wepik-export-20231130153612t832-removebg-preview.png"),
+              quantity: 5,
+            },
+            {
+              name: "Black",
+              imageUrl: require("../assets/wepik-export-20231130153236pBWo-removebg-preview.png"),
+              quantity: 3,
+            },
+            {
+              name: "Purple",
+              imageUrl: require("../assets/wepik-export-202311301533220JYe-removebg-preview.png"),
+              quantity: 4,
+            },
+          ],
+          category: "Pants",
+        },
+        {
+          id: 4,
+          name: "Shoes",
+          description: "The best shoes of our collection",
+          price: 200,
+          colors: [
+            {
+              name: "Beige",
+              imageUrl: require("../assets/wepik-export-20231130154138SkMQ-removebg-preview.png"),
+              quantity: 5,
+            },
+            {
+              name: "Green",
+              imageUrl: require("../assets/wepik-export-202311301542190PSW-removebg-preview.png"),
+              quantity: 3,
+            },
+            {
+              name: "Silver",
+              imageUrl: require("../assets/wepik-export-20231130155202wYmn-removebg-preview.png"),
+              quantity: 4,
+            },
+          ],
+          category: "Shoes",
+        },
+      ],
       cart: [],
     };
-  },
-  async created() {
-    ProductService.getProducts()
-      .then((response) => {
-        this.products = response.data;
-        for (let i = 0; i < this.products.length; i++) {
-          for (let j = 0; j < this.products[i].colors.length; j++) {
-            this.products[i].colors[j].imageUrl = require("../assets/" +
-              this.products[i].colors[j].imageUrl);
-          }
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   },
   computed: {
     cartCount() {
@@ -103,10 +194,10 @@ export default {
     },
   },
   methods: {
-    addToCart(product, color) {
-      const selectedColor = product.colors.find((c) => c.name === color);
+    addToCart(product) {
+      const selectedColor = product.colors.find((c) => c.quantity > 0);
 
-      if (selectedColor && selectedColor.quantity > 0) {
+      if (selectedColor) {
         const cartProduct = {
           ...product,
           color: selectedColor.name,
@@ -138,20 +229,20 @@ export default {
     incrementQuantity(product) {
       if (product.colors[0].quantity < this.initialProductQuantity) {
         product.colors[0].quantity++;
-        this.updateLocalStorage(product, true);
+      } else {
+        console.log(this.initialProductQuantity + " initial");
+        console.log(product.colors[0].quantity);
       }
     },
     decrementQuantity(product) {
       if (product.colors[0].quantity > 0) {
         product.colors[0].quantity--;
-        this.updateLocalStorage(product, false);
       }
+      console.log(product.colors[0].quantity);
     },
     updateLocalStorage(product, isAdding) {
       const savedCart = JSON.parse(localStorage.getItem("cart")) || [];
-      const index = savedCart.findIndex(
-        (p) => p.id === product.id && p.color === product.colors[0].name
-      );
+      const index = savedCart.findIndex((p) => p.id === product.id);
 
       if (index !== -1) {
         if (isAdding) {
@@ -162,7 +253,6 @@ export default {
       } else if (isAdding) {
         savedCart.push({
           id: product.id,
-          color: product.colors[0].name,
           quantity: 1,
         });
       }
@@ -174,10 +264,8 @@ export default {
       for (const item of savedCart) {
         const product = this.products.find((p) => p.id === item.id);
         if (product) {
-          const selectedColor = product.colors.find(
-            (c) => c.name === item.color
-          );
-          if (selectedColor && selectedColor.quantity > 0) {
+          const selectedColor = product.colors.find((c) => c.quantity > 0);
+          if (selectedColor) {
             this.cart.push({
               ...product,
               color: selectedColor.name,
@@ -213,9 +301,7 @@ export default {
 .col {
   flex: 0 0 20%;
 }
-img {
-  height: 200px;
-}
+
 .card {
   width: 100%;
   border: 1px solid #0c9cda;

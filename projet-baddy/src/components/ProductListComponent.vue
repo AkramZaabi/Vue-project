@@ -3,54 +3,58 @@
     <h2>Product List</h2>
     <div class="container">
       <div class="container shadow p-3 mb-5 bg-body rounded" id="clothing">
-        <div class="row row-cols-1 row-cols-md-2 g-4 mb-5 mt-5 clothes-card">
-          <div class="col" v-for="product in products" :key="product.name">
-            <div class="card" style="width: 12rem">
+        <div class="nav-products mt-5">
+          <h2 class="mt-5">Products</h2>
+          <div class="link-products">
+            <button class="btn btn-primary" @click="chooseCategory('')">
+              ALL
+            </button>
+            <button class="btn btn-primary" @click="chooseCategory('T-shirts')">
+              T_shirt
+            </button>
+            <button
+              class="btn btn-primary"
+              @click="chooseCategory('Sweatshirts')"
+            >
+              sweater
+            </button>
+            <button class="btn btn-primary" @click="chooseCategory('Pants')">
+              pants
+            </button>
+            <button class="btn btn-primary" @click="chooseCategory('Shoes')">
+              shoes
+            </button>
+            <button class="btn btn-primary" @click="chooseCategory('Hoodie')">
+              hoodie
+            </button>
+          </div>
+        </div>
+        <div
+          class="row row-cols-1 row-cols-md-1 g-5 mb-5 mt-5 clothes-card ms-5 clothy"
+        >
+          <div class="col" v-for="product in listProducts" :key="product.name">
+            <div class="card product" style="width: 12rem">
               <img
+                id="image-product"
                 :src="product.colors[0].imageUrl"
                 class="card-img-top"
                 :class="{ 'image-disabled': product.colors[0].quantity === 0 }"
                 alt="..."
               />
-              <div class="card-body text-center">
+              <div
+                class="card-body text-center product-description"
+                height="250px"
+              >
                 <h5 class="card-title">{{ product.name }}</h5>
                 <p class="card-text">
                   <span class="span-product mt-2">{{ product.price }} TND</span>
                 </p>
-                <div class="quantity-controls">
-                  <button
-                    class="btn btn-secondary"
-                    @click="decrementQuantity(product)"
-                    :disabled="product.colors[0].quantity === 0"
-                  >
-                    -
-                  </button>
-                  <span class="quantity">{{ product.colors[0].quantity }}</span>
-                  <button
-                    class="btn btn-secondary"
-                    @click="incrementQuantity(product)"
-                    :disabled="
-                      product.colors[0].quantity === initialProductQuantity
-                    "
-                  >
-                    +
-                  </button>
-                </div>
                 <button
                   class="btn btn-primary"
-                  @click="addToCart(product, product.colors[0].name)"
+                  @click="addToCart(product)"
                   :disabled="product.colors[0].quantity === 0"
                 >
-                  Buy
-                </button>
-                <button
-                  class="btn btn-danger"
-                  @click="removeFromCart(product)"
-                  :disabled="
-                    product.colors[0].quantity === initialProductQuantity
-                  "
-                >
-                  Remove
+                  Add
                 </button>
               </div>
             </div>
@@ -66,6 +70,7 @@
 
 <script>
 import ProductService from "@/services/ProductService.js";
+
 export default {
   name: "ProductListComponent",
   data() {
@@ -73,22 +78,24 @@ export default {
       initialProductQuantity: 5,
       products: null,
       cart: [],
+      category: null,
     };
   },
   async created() {
-    ProductService.getProducts()
-      .then((response) => {
-        this.products = response.data;
-        for (let i = 0; i < this.products.length; i++) {
-          for (let j = 0; j < this.products[i].colors.length; j++) {
-            this.products[i].colors[j].imageUrl = require("../assets/" +
-              this.products[i].colors[j].imageUrl);
-          }
+    try {
+      const response = await ProductService.getProducts();
+      this.products = response.data;
+
+      for (let i = 0; i < this.products.length; i++) {
+        for (let j = 0; j < this.products[i].colors.length; j++) {
+          this.products[i].colors[j].imageUrl = require("../assets/" +
+            this.products[i].colors[j].imageUrl);
         }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      }
+      console.log(this.products);
+    } catch (error) {
+      console.error(error);
+    }
   },
   computed: {
     cartCount() {
@@ -100,113 +107,101 @@ export default {
         0
       );
     },
+
+    listProducts() {
+      let list = [];
+
+      if (this.category == null) {
+        console.log(this.products);
+        return this.products;
+      }
+
+      return list;
+    },
   },
   methods: {
-    addToCart(product, color) {
-      const selectedColor = product.colors.find((c) => c.name === color);
-
-      if (selectedColor && selectedColor.quantity > 0) {
-        const cartProduct = {
-          ...product,
-          color: selectedColor.name,
-          imageUrl: selectedColor.imageUrl,
-          quantity: 1,
-        };
-
-        this.cart.push(cartProduct);
-        selectedColor.quantity--;
-
-        this.updateLocalStorage(cartProduct, true);
-      }
+    show() {
+      console.log(this.listProducts);
     },
-    removeFromCart(product) {
-      const index = this.cart.findIndex((p) => p.id === product.id);
-      if (index !== -1) {
-        const removedProduct = this.cart.splice(index, 1)[0];
-        const selectedColor = product.colors.find(
-          (c) => c.name === removedProduct.color
-        );
-
-        if (selectedColor) {
-          selectedColor.quantity += removedProduct.quantity;
-        }
-
-        this.updateLocalStorage(product, false);
+    chooseCategory(category2) {
+      if (!category2) {
+        this.category = null;
+        return;
       }
-    },
-    incrementQuantity(product) {
-      if (product.colors[0].quantity < this.initialProductQuantity) {
-        product.colors[0].quantity++;
-        this.updateLocalStorage(product, true);
-      }
-    },
-    decrementQuantity(product) {
-      if (product.colors[0].quantity > 0) {
-        product.colors[0].quantity--;
-        this.updateLocalStorage(product, false);
-      }
-    },
-    updateLocalStorage(product, isAdding) {
-      const savedCart = JSON.parse(localStorage.getItem("cart")) || [];
-      const index = savedCart.findIndex(
-        (p) => p.id === product.id && p.color === product.colors[0].name
-      );
-
-      if (index !== -1) {
-        if (isAdding) {
-          savedCart[index].quantity += 1;
-        } else {
-          savedCart.splice(index, 1);
-        }
-      } else if (isAdding) {
-        savedCart.push({
-          id: product.id,
-          color: product.colors[0].name,
-          quantity: 1,
-        });
-      }
-
-      localStorage.setItem("cart", JSON.stringify(savedCart));
-    },
-    loadCartFromLocalStorage() {
-      const savedCart = JSON.parse(localStorage.getItem("cart")) || [];
-      for (const item of savedCart) {
-        const product = this.products.find((p) => p.id === item.id);
-        if (product) {
-          const selectedColor = product.colors.find(
-            (c) => c.name === item.color
-          );
-          if (selectedColor && selectedColor.quantity > 0) {
-            this.cart.push({
-              ...product,
-              color: selectedColor.name,
-              imageUrl: selectedColor.imageUrl,
-              quantity: item.quantity,
-            });
-            selectedColor.quantity -= item.quantity;
-          }
+      this.category = category2;
+      this.listProducts = [];
+      for (let i = 0; i < this.products.length; i++) {
+        if (this.products[i].category == this.category) {
+          this.listProducts.push(this.products[i]);
         }
       }
+
+      return this.listProducts;
     },
-  },
-  mounted() {
-    this.loadCartFromLocalStorage();
+    addToCart(product) {
+      const list = localStorage.getItem("products");
+      let productList = JSON.parse(list) || [];
+      const index = productList.findIndex((p) => p.id === product.id);
+      if (index === -1) {
+        productList.push(product);
+        console.log("Product added to the cart");
+      } else {
+        console.log("Product already in the cart");
+      }
+      localStorage.setItem("products", JSON.stringify(productList));
+      console.log("Cart length:", productList.length);
+    },
   },
 };
 </script>
 
 <style scoped>
+.product-description {
+  height: 50% !important;
+}
 .container {
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: left;
 }
-
+.nav-products {
+  align-self: flex-start;
+  text-align: center;
+  display: flex;
+  width: 20%;
+  justify-content: center;
+  flex-direction: column;
+}
+.link-products {
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Center items vertically */
+  flex-direction: column;
+}
+.link-products div {
+  border: 1px solid black;
+  margin-top: 10px;
+  border-radius: 5px;
+  width: 70%;
+  text-align: center;
+}
+.link-products div:hover {
+  background-color: #0c9cda;
+  color: white;
+  border: 1px solid white;
+  cursor: pointer;
+}
+.clothy {
+  flex-wrap: wrap;
+}
 .row-cols-md-2 {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-evenly;
+}
+
+#image-product {
+  height: 180px !important;
 }
 
 .col {
@@ -225,19 +220,21 @@ export default {
   transform: scale(1.05);
 }
 
-.photos img {
+.card img {
   width: 100%;
-  height: 20% !important;
   border-radius: 5px;
+  height: 40% !important;
 }
-
+.product {
+  height: 350px;
+}
 .card-body {
   padding: 15px;
 }
 
 .card-title {
   font-weight: bold;
-  margin-bottom: 10px;
+  height: 15%;
 }
 
 .card-text {
@@ -274,7 +271,9 @@ export default {
 .btn-danger:hover {
   background-color: #dc3545;
 }
-
+h5 {
+  font-size: 15px;
+}
 .image-disabled {
   filter: grayscale(100%);
   opacity: 0.7;
