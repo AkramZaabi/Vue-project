@@ -30,7 +30,8 @@
                     class="btn btn-secondary"
                     @click="incrementQuantity(product)"
                     :disabled="
-                      product.colors[0].quantity === initialProductQuantity
+                      product.colors[0].quantity === initialProductQuantity ||
+                      product.colors[0].quantity <= 0
                     "
                   >
                     +
@@ -38,7 +39,7 @@
                 </div>
                 <button
                   class="btn btn-primary"
-                  @click="addToCart(product, product.colors[0].name)"
+                  @click="addToCart(product)"
                   :disabled="product.colors[0].quantity === 0"
                 >
                   Buy
@@ -193,10 +194,10 @@ export default {
     },
   },
   methods: {
-    addToCart(product, color) {
-      const selectedColor = product.colors.find((c) => c.name === color);
+    addToCart(product) {
+      const selectedColor = product.colors.find((c) => c.quantity > 0);
 
-      if (selectedColor && selectedColor.quantity > 0) {
+      if (selectedColor) {
         const cartProduct = {
           ...product,
           color: selectedColor.name,
@@ -220,13 +221,14 @@ export default {
 
         if (selectedColor) {
           selectedColor.quantity += removedProduct.quantity;
+          this.updateProductQuantity(product);
         }
 
         this.updateLocalStorage(product, false);
       }
     },
     incrementQuantity(product) {
-      if (product.colors[0].quantity < this.initialProductQuantity) {
+      if (product.colors[0].quantity < product.colors[0].initialQuantity) {
         product.colors[0].quantity++;
         this.updateLocalStorage(product, true);
       }
@@ -239,9 +241,7 @@ export default {
     },
     updateLocalStorage(product, isAdding) {
       const savedCart = JSON.parse(localStorage.getItem("cart")) || [];
-      const index = savedCart.findIndex(
-        (p) => p.id === product.id && p.color === product.colors[0].name
-      );
+      const index = savedCart.findIndex((p) => p.id === product.id);
 
       if (index !== -1) {
         if (isAdding) {
@@ -252,7 +252,6 @@ export default {
       } else if (isAdding) {
         savedCart.push({
           id: product.id,
-          color: product.colors[0].name,
           quantity: 1,
         });
       }
@@ -264,10 +263,8 @@ export default {
       for (const item of savedCart) {
         const product = this.products.find((p) => p.id === item.id);
         if (product) {
-          const selectedColor = product.colors.find(
-            (c) => c.name === item.color
-          );
-          if (selectedColor && selectedColor.quantity > 0) {
+          const selectedColor = product.colors.find((c) => c.quantity > 0);
+          if (selectedColor) {
             this.cart.push({
               ...product,
               color: selectedColor.name,
@@ -275,8 +272,17 @@ export default {
               quantity: item.quantity,
             });
             selectedColor.quantity -= item.quantity;
+            this.updateProductQuantity(product);
           }
         }
+      }
+    },
+    updateProductQuantity(product) {
+      const selectedColor = product.colors.find(
+        (c) => c.name === this.cart[0].color
+      );
+      if (selectedColor) {
+        selectedColor.quantity += this.cart[0].quantity;
       }
     },
   },
