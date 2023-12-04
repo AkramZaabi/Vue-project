@@ -169,7 +169,7 @@ export default {
   align-self: flex-start;
   text-align: center;
   display: flex;
-  width: 20%;
+  width: 30%;
   justify-content: center;
   flex-direction: column;
 }
@@ -178,6 +178,7 @@ export default {
   justify-content: center;
   align-items: center; /* Center items vertically */
   flex-direction: column;
+  width: 100%;
 }
 .link-products div {
   border: 1px solid black;
