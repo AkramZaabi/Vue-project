@@ -1,5 +1,10 @@
 <template>
-  <CartPurchase :cart="cart"></CartPurchase>
+  <CartPurchase
+    @decrement-quantity="decreasequantity"
+    @increment-quantity="addquantity"
+    @update-quantity="updatecart"
+    :cart="cart"
+  ></CartPurchase>
 </template>
 
 <script>
@@ -29,6 +34,9 @@ export default {
     },
   },
   methods: {
+    updatecart() {
+      localStorage.setItem("product", this.cart);
+    },
     addquantity(id) {
       for (let i = 0; i < this.cart.length; i++) {
         if (id == this.cart[i].id) {

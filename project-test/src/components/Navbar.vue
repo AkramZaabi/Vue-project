@@ -19,6 +19,7 @@
             ><a>Home</a></router-link
           >
           <router-link class="nav-link" to="/product">Products</router-link>
+          <router-link class="nav-link" to="/review">Review</router-link>
           <router-link class="nav-link" to="/about">About</router-link>
         </div>
       </div>

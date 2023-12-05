@@ -31,7 +31,7 @@
                     @click="incrementQuantity(product)"
                     :disabled="
                       product.colors[0].quantity === initialProductQuantity ||
-                      product.colors[0].quantity === 0
+                      product.colors[0].quantity <= 0
                     "
                   >
                     +
@@ -221,24 +221,23 @@ export default {
 
         if (selectedColor) {
           selectedColor.quantity += removedProduct.quantity;
+          this.updateProductQuantity(product);
         }
 
         this.updateLocalStorage(product, false);
       }
     },
     incrementQuantity(product) {
-      if (product.colors[0].quantity < this.initialProductQuantity) {
+      if (product.colors[0].quantity < product.colors[0].initialQuantity) {
         product.colors[0].quantity++;
-      } else {
-        console.log(this.initialProductQuantity + " initial");
-        console.log(product.colors[0].quantity);
+        this.updateLocalStorage(product, true);
       }
     },
     decrementQuantity(product) {
       if (product.colors[0].quantity > 0) {
         product.colors[0].quantity--;
+        this.updateLocalStorage(product, false);
       }
-      console.log(product.colors[0].quantity);
     },
     updateLocalStorage(product, isAdding) {
       const savedCart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -273,8 +272,17 @@ export default {
               quantity: item.quantity,
             });
             selectedColor.quantity -= item.quantity;
+            this.updateProductQuantity(product);
           }
         }
+      }
+    },
+    updateProductQuantity(product) {
+      const selectedColor = product.colors.find(
+        (c) => c.name === this.cart[0].color
+      );
+      if (selectedColor) {
+        selectedColor.quantity += this.cart[0].quantity;
       }
     },
   },

@@ -62,7 +62,7 @@
                         </button>
 
                         <input
-                          id="form1"
+                          :id="product.id"
                           min="0"
                           name="quantity"
                           :value="product.colors[0].inStock"
@@ -121,7 +121,7 @@
                     <hr class="my-4" />
 
                     <div class="d-flex justify-content-between mb-4">
-                      <h5 class="text-uppercase">items 3</h5>
+                      <h5 class="text-uppercase">items {{ cartLength }}</h5>
                       <h5>€ 132.00</h5>
                     </div>
 
@@ -155,10 +155,11 @@
 
                     <div class="d-flex justify-content-between mb-5">
                       <h5 class="text-uppercase">Total price</h5>
-                      <h5>€ 137.00</h5>
+                      <h5>{{ prixtotal }}</h5>
                     </div>
 
                     <button
+                      @click="generatePDF()"
                       type="button"
                       class="btn btn-dark btn-block btn-lg"
                       data-mdb-ripple-color="dark"
@@ -177,8 +178,15 @@
 </template>
 
 <script>
+import { jsPDF } from "jspdf";
+import autoTable from "jspdf-autotable";
 export default {
   name: "CartPurchase",
+  data() {
+    return {
+      heading: "Your Tredify Mode Here", // Provide your actual heading
+    };
+  },
   props: {
     cart: {
       type: Object,
@@ -189,31 +197,45 @@ export default {
     cartLength() {
       return this.cart.length;
     },
+    prixtotal() {
+      let total = 0;
+
+      this.cart.forEach((product) => {
+        total += product.colors[0].inStock * product.price;
+      });
+
+      // Return the formatted total price
+      return "€ " + total.toFixed(2);
+    },
   },
   methods: {
     incrementquantity(product) {
-      if (product.colors[0].inStock < product.colors[0].quantity) {
-        product.colors[0].inStock++;
-      } else {
-        alert("vous avez atteint la quantite maxiale de ce produit !!");
-      }
-
-      console.log(product.colors[0].inStock);
+      this.$emit("increment-quantity", product.id);
     },
     decrementquantity(product) {
-      const list = localStorage.getItem("products");
-      let carted = JSON.parse(list) || [];
-      if (product.colors[0].inStock > 0) {
-        product.colors[0].inStock--;
-        let id = product.id;
-        for (let i = 0; i < carted.length; i++) {
-          if (id == carted[i].id) {
-            carted[i].colors[0].inStock = product.colors[0].inStock;
-            break;
-          }
-        }
-        localStorage.setItem("products", JSON.stringify(carted));
-      }
+      this.$emit("decrement-quantity", product.id);
+    },
+    generatePDF() {
+      const doc = new jsPDF({
+        orientation: "portrait",
+        unit: "in",
+        format: "letter",
+      });
+      doc.text(this.heading, 3.5, 0.4); // (message,horizontale,vertical)
+      var total_payment = "Total amount :" + this.prixtotal + " Dt ";
+      doc.text(total_payment, 3.4, 0.7);
+      autoTable(doc, { html: "#my-table" });
+      this.cart.forEach((v) => {
+        var name = v.name;
+        var quantity = v.colors[0].inStock;
+        var val = quantity * v.price;
+        autoTable(doc, {
+          head: [["Name", "Quantity", "Price"]],
+          body: [[name, quantity, val]],
+        });
+      });
+
+      doc.save(`${Math.random()}.pdf`);
     },
   },
 };
