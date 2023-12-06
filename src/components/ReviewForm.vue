@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row justify-content-center mt-5">
       <div class="col-md-6">
-        <form @submit.prevent="onSubmitReview">
+        <form @submit.prevent="onSubmitReview()">
           <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">@</span>
             <input
@@ -48,7 +48,7 @@
             v-model="rating"
             required
           >
-            <option selected>Open this select menu</option>
+            <option selected disabled value="">Select a rating</option>
             <option value="1">One Star</option>
             <option value="2">Two Stars</option>
             <option value="3">Three Stars</option>
@@ -68,13 +68,32 @@
           </div>
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>
+
+        <div v-if="reviews.length > 0">
+          <h2>Existing Reviews</h2>
+          <ul>
+            <li v-for="(existingReview, index) in reviews" :key="index">
+              <strong>{{ existingReview.name }}</strong> -
+              {{ existingReview.rating }} Stars
+              <p>{{ existingReview.review }}</p>
+            </li>
+          </ul>
+        </div>
+        <div v-else>
+          <p>No reviews available.</p>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
+  created() {
+    this.fetchReviews();
+  },
   data() {
     return {
       name: "",
@@ -86,14 +105,38 @@ export default {
   },
   methods: {
     onSubmitReview() {
-      let productReview = {
+      const productReview = {
         name: this.name,
+        email: this.email,
         review: this.review,
         rating: this.rating,
       };
 
-      this.$emit("review-sent", productReview);
+      axios
+        .post("http://localhost:3000/reviews", productReview)
+        .then((response) => {
+          console.log(response.data);
+          this.$emit("review-sent", productReview);
+          this.clearForm();
+          this.$router.go();
+        })
+        .catch((error) => {
+          console.error("Error updating review:", error);
+        });
+    },
+    fetchReviews() {
+      axios
+        .get("http://localhost:3000/reviews")
+        .then((response) => {
+          this.reviews = response.data;
+        })
+        .catch((error) => {
+          console.error("Error fetching reviews:", error);
+        });
+    },
+    clearForm() {
       this.name = "";
+      this.email = "";
       this.review = "";
       this.rating = null;
     },
@@ -101,4 +144,6 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+/* Add your component-specific styles here */
+</style>

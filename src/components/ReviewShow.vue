@@ -22,11 +22,31 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   props: {
     reviews: {
       type: Array,
       required: true,
+    },
+  },
+  mounted() {
+    // You can remove this if you don't need to fetch reviews when the component is mounted
+    // this.fetchReviews();
+  },
+  methods: {
+    // If you need to fetch reviews dynamically, uncomment the method below
+    fetchReviews() {
+      axios
+        .get("http://localhost:3000/reviews")
+        .then((response) => {
+          // eslint-disable-next-line vue/no-mutating-props
+          this.reviews = response.data;
+        })
+        .catch((error) => {
+          console.error("Error fetching reviews:", error);
+        });
     },
   },
 };
