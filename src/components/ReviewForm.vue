@@ -68,19 +68,25 @@
           </div>
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>
-
-        <div v-if="reviews.length > 0">
-          <h2>Existing Reviews</h2>
-          <ul>
-            <li v-for="(existingReview, index) in reviews" :key="index">
-              <strong>{{ existingReview.name }}</strong> -
-              {{ existingReview.rating }} Stars
-              <p>{{ existingReview.review }}</p>
-            </li>
-          </ul>
-        </div>
-        <div v-else>
-          <p>No reviews available.</p>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div v-if="reviews.length > 0" class="row justify-content-center mt-5">
+      <h2 class="mb-4">Existing Reviews:</h2>
+      <div
+        v-for="(review, index) in reviews"
+        :key="index"
+        class="col-md-4 mb-3"
+      >
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{ review.name }}</h5>
+            <p class="card-text">{{ review.review }}</p>
+            <p class="card-text">
+              <strong>Rating:</strong> {{ review.rating }} stars
+            </p>
+          </div>
         </div>
       </div>
     </div>
