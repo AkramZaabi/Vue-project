@@ -52,6 +52,9 @@ export default {
       }
       localStorage.setItem("products", JSON.stringify(this.cart));
       console.log(id);
+      this.$router.push({ name: "Purchase" }).then(() => {
+        this.$router.go();
+      });
       return this.cart;
     },
     decreasequantity(id) {
@@ -67,8 +70,10 @@ export default {
         }
       }
       localStorage.setItem("products", JSON.stringify(this.cart));
-      console.log(this.cart);
-
+      console.log(this.$router);
+      this.$router.push({ name: "Purchase" }).then(() => {
+        this.$router.go();
+      });
       return this.cart;
     },
   },

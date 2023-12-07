@@ -234,7 +234,7 @@ export default {
           body: [[name, quantity, val]],
         });
       });
-
+      localStorage.clear();
       doc.save(`${Math.random()}.pdf`);
     },
   },
