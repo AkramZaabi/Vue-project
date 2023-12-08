@@ -1,7 +1,9 @@
 <template>
   <nav id="nav" class="navbar navbar-expand-lg">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#"><img src="../assets/trendify mode.png"></a>
+      <a class="navbar-brand" href="#"
+        ><img src="../assets/trendify mode.png" id="logo"
+      /></a>
       <button
         class="navbar-toggler"
         type="button"
@@ -35,6 +37,10 @@ export default {
 </script>
 
 <style scoped>
+#logo {
+  width: 110px;
+  height: 60px;
+}
 #nav {
   font-weight: bold;
   font-size: 20px;
