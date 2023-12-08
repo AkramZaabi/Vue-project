@@ -28,7 +28,7 @@
                     >
                       <div class="col-md-2 col-lg-2 col-xl-2">
                         <img
-                          :src="product.colors[0].imageUrl"
+                          :src="product.colors[product.selected].imageUrl"
                           class="img-fluid rounded-3"
                           alt="Cotton T-shirt"
                         />
@@ -65,7 +65,7 @@
                           :id="product.id"
                           min="0"
                           name="quantity"
-                          :value="product.colors[0].inStock"
+                          :value="product.colors[product.selected].inStock"
                           type="number"
                           class="form-control form-control-sm"
                         />
@@ -201,7 +201,7 @@ export default {
       let total = 0;
 
       this.cart.forEach((product) => {
-        total += product.colors[0].inStock * product.price;
+        total += product.colors[product.selected].inStock * product.price;
       });
 
       // Return the formatted total price
