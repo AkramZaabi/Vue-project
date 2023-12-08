@@ -1,7 +1,7 @@
 <template>
   <nav id="nav" class="navbar navbar-expand-lg">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">LOGO</a>
+      <a class="navbar-brand" href="#"><img src="../assets/trendify mode.png"></a>
       <button
         class="navbar-toggler"
         type="button"
@@ -20,6 +20,7 @@
           >
           <router-link class="nav-link" to="/product">Products</router-link>
           <router-link class="nav-link" to="/purchase">purchase</router-link>
+          <router-link class="nav-link" to="/review">Reviews</router-link>
           <router-link class="nav-link" to="/about">About</router-link>
         </div>
       </div>

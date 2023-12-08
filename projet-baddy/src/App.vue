@@ -1,9 +1,12 @@
 <template>
   <Navbar />
-  <router-view />
+  <transition name="fade" mode="out-in">
+    <router-view />
+  </transition>
 </template>
 <script>
 import Navbar from "@/components/Navbar.vue";
+import "animate.css";
 export default {
   name: "AboutPage",
   components: {
@@ -18,6 +21,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  overflow-x: hidden;
 }
 
 nav {
@@ -31,5 +35,14 @@ nav a {
 
 nav a.router-link-exact-active {
   color: #42b983;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateX(2em);
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.3s ease;
 }
 </style>
