@@ -41,10 +41,11 @@ export default {
       for (let i = 0; i < this.cart.length; i++) {
         if (id == this.cart[i].id) {
           if (
-            this.cart[i].colors[0].inStock < this.cart[i].colors[0].quantity
+            this.cart[i].colors[this.cart[i].selected].inStock <
+            this.cart[i].colors[this.cart[i].selected].quantity
           ) {
-            this.cart[i].colors[0].inStock++;
-            console.log(this.cart[i].colors[0].inStock);
+            this.cart[i].colors[this.cart[i].selected].inStock++;
+            console.log(this.cart[i].colors[this.cart[i].selected].inStock);
           } else {
             alert("vous avez atteint la quantite maxiale de ce produit !!");
           }
@@ -52,14 +53,17 @@ export default {
       }
       localStorage.setItem("products", JSON.stringify(this.cart));
       console.log(id);
+      this.$router.push({ name: "Purchase" }).then(() => {
+        this.$router.go();
+      });
       return this.cart;
     },
     decreasequantity(id) {
       for (let i = 0; i < this.cart.length; i++) {
         if (id == this.cart[i].id) {
-          if (this.cart[i].colors[0].inStock > 0) {
-            this.cart[i].colors[0].inStock--;
-            console.log(this.cart[i].colors[0].inStock);
+          if (this.cart[i].colors[this.cart[i].selected].inStock > 0) {
+            this.cart[i].colors[this.cart[i].selected].inStock--;
+            console.log(this.cart[i].colors[this.cart[i].selected].inStock);
             break;
           } else {
             alert("vous avez atteint la quantite maxiale de ce produit !!");
@@ -67,8 +71,10 @@ export default {
         }
       }
       localStorage.setItem("products", JSON.stringify(this.cart));
-      console.log(this.cart);
-
+      console.log(this.$router);
+      this.$router.push({ name: "Purchase" }).then(() => {
+        this.$router.go();
+      });
       return this.cart;
     },
   },

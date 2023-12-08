@@ -36,9 +36,12 @@
             <div class="card product" style="width: 12rem">
               <img
                 id="image-product"
-                :src="product.colors[0].imageUrl"
+                :src="product.colors[product.selected].imageUrl"
                 class="card-img-top"
-                :class="{ 'image-disabled': product.colors[0].quantity === 0 }"
+                :class="{
+                  'image-disabled':
+                    product.colors[product.selected].quantity === 0,
+                }"
                 alt="..."
               />
               <div
@@ -49,6 +52,15 @@
                 <p class="card-text">
                   <span class="span-product mt-2">{{ product.price }} TND</span>
                 </p>
+                <div class="colors">
+                  <button
+                    v-for="(color, index) in product.colors"
+                    :key="index"
+                    :style="{ backgroundColor: color.name }"
+                    class="color"
+                    @click="update_selected(product, index)"
+                  ></button>
+                </div>
                 <button
                   class="btn btn-primary"
                   @click="addToCart(product)"
@@ -151,6 +163,10 @@ export default {
       localStorage.setItem("products", JSON.stringify(productList));
       console.log("Cart length:", productList.length);
     },
+    update_selected(product, index) {
+      product.selected = index;
+      console.log(index);
+    },
   },
 };
 </script>
@@ -172,6 +188,18 @@ export default {
   width: 30%;
   justify-content: center;
   flex-direction: column;
+}
+
+.colors {
+  display: flex;
+  justify-content: center;
+  justify-content: space-evenly;
+}
+.color {
+  width: 30px;
+  height: 30px;
+  border: 1px solid grey;
+  border-radius: 50%;
 }
 .link-products {
   display: flex;
