@@ -5,7 +5,7 @@
       "name": "T-shirt Super Mario",
       "description": "T-shirt avec la photo de Mario",
       "price": 50,
-      "selected":0,
+      "selected": 0,
       "colors": [
         {
           "name": "Green",
@@ -39,7 +39,7 @@
       "name": "Sweatshirt Super Mario",
       "description": "Capuche avec la photo de Mario",
       "price": 120,
-      "selected":0,
+      "selected": 0,
       "colors": [
         {
           "name": "Black",
@@ -73,7 +73,7 @@
       "name": "Pants",
       "description": "The best stylish Pants of our collection",
       "price": 120,
-      "selected":0,
+      "selected": 0,
       "colors": [
         {
           "name": "green",
@@ -101,7 +101,7 @@
       "name": "Shoes",
       "description": "The best shoes of our collection",
       "price": 200,
-      "selected":0,
+      "selected": 0,
       "colors": [
         {
           "name": "Beige",
@@ -129,7 +129,7 @@
       "name": "Hoodie",
       "description": "Pink Classy",
       "price": 200,
-      "selected":0,
+      "selected": 0,
       "colors": [
         {
           "name": "pink",
@@ -145,7 +145,7 @@
       "name": "Hoodie",
       "description": "Blue Night",
       "price": 210,
-      "selected":0,
+      "selected": 0,
       "colors": [
         {
           "name": "blue",
@@ -221,6 +221,13 @@
       "review": "Bon site",
       "rating": "4",
       "id": 9
+    },
+    {
+      "name": "raja",
+      "email": "raja@gmail.com",
+      "review": "best  second site ever",
+      "rating": "3",
+      "id": 10
     }
   ]
 }
