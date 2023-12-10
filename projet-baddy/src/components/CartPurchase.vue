@@ -91,8 +91,36 @@
                           </svg>
                         </button>
                       </div>
-                      <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                        <h6 class="mb-0">{{ "€ " + product.price }}</h6>
+
+                      <div
+                        class="col-md-3 col-lg-2 col-xl-2 offset-lg-1"
+                        style="
+                          display: flex;
+                          justify-content: space-between;
+                          align-content: center;
+                        "
+                      >
+                        <h6 class="mt-2">{{ "€ " + product.price }}</h6>
+                        <button
+                          class="ms-2 btn btn-danger px-2"
+                          @click="deletefromCart(product.id)"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            class="bi bi-trash"
+                            viewBox="0 0 16 16"
+                          >
+                            <path
+                              d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"
+                            />
+                            <path
+                              d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"
+                            />
+                          </svg>
+                        </button>
                       </div>
                       <div class="col-md-1 col-lg-1 col-xl-1 text-end">
                         <a href="#!" class="text-muted"
@@ -122,7 +150,7 @@
 
                     <div class="d-flex justify-content-between mb-4">
                       <h5 class="text-uppercase">items {{ cartLength }}</h5>
-                      <h5>€ 132.00</h5>
+                      <h5></h5>
                     </div>
 
                     <h5 class="text-uppercase mb-3">Shipping</h5>
@@ -214,6 +242,9 @@ export default {
     },
     decrementquantity(product) {
       this.$emit("decrement-quantity", product.id);
+    },
+    deletefromCart(id) {
+      this.$emit("deletefromcart", id);
     },
     generatePDF() {
       const doc = new jsPDF({

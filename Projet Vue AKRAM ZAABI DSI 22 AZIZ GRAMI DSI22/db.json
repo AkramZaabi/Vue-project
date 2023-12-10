@@ -1,0 +1,233 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "T-shirt Super Mario",
+      "description": "T-shirt avec la photo de Mario",
+      "price": 50,
+      "selected": 0,
+      "colors": [
+        {
+          "name": "Green",
+          "imageUrl": "Free_T-Shirt_Mockup_1.png",
+          "quantity": 5,
+          "inStock": 5
+        },
+        {
+          "name": "Blue and Green",
+          "imageUrl": "Free_T-Shirt_Mockup_2.png",
+          "quantity": 3,
+          "inStock": 3
+        },
+        {
+          "name": "Blue",
+          "imageUrl": "Free_T-Shirt_Mockup_3.png",
+          "quantity": 4,
+          "inStock": 4
+        },
+        {
+          "name": "Black",
+          "imageUrl": "Free_T-Shirt_Mockup_4.png",
+          "quantity": 3,
+          "inStock": 3
+        }
+      ],
+      "category": "T-shirts"
+    },
+    {
+      "id": 2,
+      "name": "Sweatshirt Super Mario",
+      "description": "Capuche avec la photo de Mario",
+      "price": 120,
+      "selected": 0,
+      "colors": [
+        {
+          "name": "Black",
+          "imageUrl": "Free_Sweatshirt_Mockup_1.png",
+          "quantity": 5,
+          "inStock": 5
+        },
+        {
+          "name": "Green",
+          "imageUrl": "Free_Sweatshirt_Mockup_2.png",
+          "quantity": 3,
+          "inStock": 3
+        },
+        {
+          "name": "Blue",
+          "imageUrl": "Free_Sweatshirt_Mockup_3.png",
+          "quantity": 4,
+          "inStock": 4
+        },
+        {
+          "name": "Green and Blue",
+          "imageUrl": "Free_Sweatshirt_Mockup_4.png",
+          "quantity": 3,
+          "inStock": 3
+        }
+      ],
+      "category": "Sweatshirts"
+    },
+    {
+      "id": 3,
+      "name": "Pants",
+      "description": "The best stylish Pants of our collection",
+      "price": 120,
+      "selected": 0,
+      "colors": [
+        {
+          "name": "green",
+          "imageUrl": "wepik-export-20231130153612t832-removebg-preview.png",
+          "quantity": 5,
+          "inStock": 5
+        },
+        {
+          "name": "Black",
+          "imageUrl": "wepik-export-20231130153236pBWo-removebg-preview.png",
+          "quantity": 3,
+          "inStock": 3
+        },
+        {
+          "name": "Purple",
+          "imageUrl": "wepik-export-202311301533220JYe-removebg-preview.png",
+          "quantity": 4,
+          "inStock": 4
+        }
+      ],
+      "category": "Pants"
+    },
+    {
+      "id": 4,
+      "name": "Shoes",
+      "description": "The best shoes of our collection",
+      "price": 200,
+      "selected": 0,
+      "colors": [
+        {
+          "name": "Beige",
+          "imageUrl": "wepik-export-20231130154138SkMQ-removebg-preview.png",
+          "quantity": 5,
+          "inStock": 5
+        },
+        {
+          "name": "Green",
+          "imageUrl": "wepik-export-202311301542190PSW-removebg-preview.png",
+          "quantity": 3,
+          "inStock": 3
+        },
+        {
+          "name": "Silver",
+          "imageUrl": "wepik-export-20231130155202wYmn-removebg-preview.png",
+          "quantity": 4,
+          "inStock": 4
+        }
+      ],
+      "category": "Shoes"
+    },
+    {
+      "id": 5,
+      "name": "Hoodie",
+      "description": "Pink Classy",
+      "price": 200,
+      "selected": 0,
+      "colors": [
+        {
+          "name": "pink",
+          "imageUrl": "pink_hoodie.png",
+          "quantity": 5,
+          "inStock": 5
+        }
+      ],
+      "category": "Hoodie"
+    },
+    {
+      "id": 6,
+      "name": "Hoodie",
+      "description": "Blue Night",
+      "price": 210,
+      "selected": 0,
+      "colors": [
+        {
+          "name": "blue",
+          "imageUrl": "blue_hoodie.png",
+          "quantity": 5,
+          "inStock": 5
+        }
+      ],
+      "category": "Hoodie"
+    }
+  ],
+  "cart": [],
+  "reviews": [
+    {
+      "name": "Aziz",
+      "email": "grami.medaziz00@gmail.com",
+      "review": "great",
+      "rating": "5",
+      "id": 1
+    },
+    {
+      "name": "Akram",
+      "email": "akram@gmail.com",
+      "review": "very good website",
+      "rating": "4",
+      "id": 2
+    },
+    {
+      "name": "aaaa",
+      "email": "aaaa@gmail.com",
+      "review": "a",
+      "rating": "5",
+      "id": 3
+    },
+    {
+      "name": "aaa",
+      "email": "aaaaa@gmail.om",
+      "review": "aaaaaaaaa",
+      "rating": "3",
+      "id": 4
+    },
+    {
+      "name": "aaaa",
+      "email": "grami.medaziz00@gmail.com",
+      "review": "aaa",
+      "rating": "3",
+      "id": 5
+    },
+    {
+      "name": "",
+      "email": "aaaa@gmail.com",
+      "review": "a",
+      "rating": "4",
+      "id": 6
+    },
+    {
+      "name": "",
+      "email": "gggggggggg@gmail.com",
+      "review": "ggggggggg",
+      "rating": "5",
+      "id": 7
+    },
+    {
+      "name": "kkkk",
+      "email": "kk@gmail.com",
+      "review": "kkk",
+      "rating": "2",
+      "id": 8
+    },
+    {
+      "name": "mohamed",
+      "email": "mohamed@gmail.com",
+      "review": "Bon site",
+      "rating": "4",
+      "id": 9
+    },
+    {
+      "name": "raja",
+      "email": "raja@gmail.com",
+      "review": "best  second site ever",
+      "rating": "3",
+      "id": 10
+    }
+  ]
+}

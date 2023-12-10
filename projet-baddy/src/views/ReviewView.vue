@@ -1,6 +1,6 @@
 <template>
   <div class="review">
-    <h1>Products Review</h1>
+    <h1 class="mt-5">Products Review</h1>
     <ReviewShow v-bind:reviews="reviews" />
     <ReviewForm @review-sent="showReview" />
   </div>
@@ -29,4 +29,24 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+h1 {
+  color: #6699cc;
+}
+h1 {
+  animation-name: let;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+}
+@keyframes let {
+  0% {
+    letter-spacing: 2%;
+  }
+  50% {
+    letter-spacing: 1px;
+  }
+  100% {
+    letter-spacing: 2px;
+  }
+}
+</style>

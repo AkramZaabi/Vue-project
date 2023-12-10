@@ -12,7 +12,7 @@
 
     <div class="img-container">
       <img
-        src="../assets/Niche service marketplace-amico.svg"
+        src="../assets/Ecommerce checkout laptop-amico.svg"
         alt="Success Starts with a Great Product"
       />
     </div>
@@ -126,6 +126,22 @@ export default {
 </script>
 
 <style scoped>
+h1 {
+  animation-name: let;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+}
+@keyframes let {
+  0% {
+    letter-spacing: 2%;
+  }
+  50% {
+    letter-spacing: 1px;
+  }
+  100% {
+    letter-spacing: 2px;
+  }
+}
 #h3 {
   width: 100%;
   justify-content: flex-end;
