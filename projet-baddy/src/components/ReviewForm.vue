@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <div class="row justify-content-center mt-5">
+  <div class="container all">
+    <div class="row justify-content-center mt-5 forms">
       <div class="col-md-6">
         <form @submit.prevent="onSubmitReview()">
           <div class="input-group mb-3">
@@ -70,6 +70,7 @@
         </form>
       </div>
     </div>
+    <img src="../assets/Ecommerce campaign-amico.svg" class="me-5" />
   </div>
   <div class="container">
     <div v-if="reviews.length > 0" class="row justify-content-center mt-5">
@@ -152,4 +153,18 @@ export default {
 
 <style scoped>
 /* Add your component-specific styles here */
+.all {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+}
+.forms {
+  width: 100%;
+}
+.all img {
+  width: 30%;
+}
+h2 {
+  color: #6699cc;
+}
 </style>

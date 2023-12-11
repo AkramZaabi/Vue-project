@@ -1,6 +1,7 @@
 <template>
   <CartPurchase
     @decrement-quantity="decreasequantity"
+    @deletefromcart="deletefromcart"
     @increment-quantity="addquantity"
     @update-quantity="updatecart"
     :cart="cart"
@@ -76,6 +77,19 @@ export default {
         this.$router.go();
       });
       return this.cart;
+    },
+    deletefromcart(id) {
+      const indexToRemove = this.cart.findIndex((product) => product.id === id);
+
+      if (indexToRemove !== -1) {
+        this.cart.splice(indexToRemove, 1);
+      } else {
+        console.log(`Item with ID ${id} not found in the cart.`);
+      }
+      localStorage.setItem("products", JSON.stringify(this.cart));
+      this.$router.push({ name: "Purchase" }).then(() => {
+        this.$router.go();
+      });
     },
   },
 };

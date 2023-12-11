@@ -54,4 +54,7 @@ export default {
 
 <style scoped>
 /* Add your component-specific styles here */
+h2 {
+  color: #6699cc;
+}
 </style>

@@ -34,16 +34,20 @@
         >
           <div class="col" v-for="product in listProducts" :key="product.name">
             <div class="card product" style="width: 12rem">
-              <img
-                id="image-product"
-                :src="product.colors[product.selected].imageUrl"
-                class="card-img-top"
-                :class="{
-                  'image-disabled':
-                    product.colors[product.selected].quantity === 0,
-                }"
-                alt="..."
-              />
+              <router-link
+                :to="{ name: 'ProductDetail', params: { id: product.id } }"
+              >
+                <img
+                  id="image-product"
+                  :src="product.colors[product.selected].imageUrl"
+                  class="card-img-top"
+                  :class="{
+                    'image-disabled':
+                      product.colors[product.selected].quantity === 0,
+                  }"
+                  alt="..."
+                />
+              </router-link>
               <div
                 class="card-body text-center product-description"
                 height="250px"
