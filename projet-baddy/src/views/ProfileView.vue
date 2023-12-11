@@ -210,7 +210,7 @@ export default {
   name: "ProfileView",
 
   computed: {
-    ...mapGetters(["getWishlist"]),
+    ...mapGetters(["getWishlist","getfacture"]),
     items() {
       console.log(this.getWishlist);
       return this.getWishlist.length;
