@@ -21,19 +21,13 @@ const routes = [
     component: ReviewView,
   },
   {
-    path: "/Profile",
-    name: "Profile",
+    path: "/about",
+    name: "about",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/ProfileView.vue"),
-  },
-  {
-    path: "/products/:id",
-    name: "ProductDetail",
-    props: true,
-    component: () => import("../views/ProductDetail.vue"),
+      import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
   },
   {
     path: "/product",

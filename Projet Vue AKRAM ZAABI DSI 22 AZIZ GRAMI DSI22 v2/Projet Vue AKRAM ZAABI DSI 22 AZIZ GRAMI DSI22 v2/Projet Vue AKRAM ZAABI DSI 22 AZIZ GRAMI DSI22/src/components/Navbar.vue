@@ -22,8 +22,8 @@
           >
           <router-link class="nav-link" to="/product">Products</router-link>
           <router-link class="nav-link" to="/purchase">purchase</router-link>
-          <router-link class="nav-link" to="/Profile">Profile</router-link>
           <router-link class="nav-link" to="/review">Reviews</router-link>
+          <router-link class="nav-link" to="/about">About</router-link>
         </div>
       </div>
     </div>

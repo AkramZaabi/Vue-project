@@ -34,20 +34,19 @@
         >
           <div class="col" v-for="product in listProducts" :key="product.name">
             <div class="card product" style="width: 12rem">
-              <router-link
-                :to="{ name: 'ProductDetail', params: { id: product.id } }"
-              >
-                <img
-                  id="image-product"
-                  :src="product.colors[product.selected].imageUrl"
-                  class="card-img-top"
-                  :class="{
-                    'image-disabled':
-                      product.colors[product.selected].quantity === 0,
-                  }"
-                  alt="..."
-                />
-              </router-link>
+              <button class="btn btn-secondary" @click="addToWishlist(product)">
+                Add to Wishlist
+              </button>
+              <img
+                id="image-product"
+                :src="product.colors[product.selected].imageUrl"
+                class="card-img-top"
+                :class="{
+                  'image-disabled':
+                    product.colors[product.selected].quantity === 0,
+                }"
+                alt="..."
+              />
               <div
                 class="card-body text-center product-description"
                 height="250px"
@@ -66,32 +65,11 @@
                   ></button>
                 </div>
                 <button
-                  class="btn btn-primary ms-1"
+                  class="btn btn-primary"
                   @click="addToCart(product)"
                   :disabled="product.colors[0].quantity === 0"
                 >
                   Add
-                </button>
-
-                <button
-                  class="btn btn-link px-2"
-                  @click="addfavorite(product)"
-                  id="btn-favorite"
-                >
-                  <svg
-                    style="height: 28px; width: 30px"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    class="bi bi-heart-fill"
-                    viewBox="0 0 16 16"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"
-                    />
-                  </svg>
                 </button>
               </div>
             </div>
@@ -107,7 +85,6 @@
 
 <script>
 import ProductService from "@/services/ProductService.js";
-import { mapMutations } from "vuex";
 
 export default {
   name: "ProductListComponent",
@@ -158,10 +135,24 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(["setFavorite"]),
-    addfavorite(product) {
-      this.setFavorite(product);
+    addToWishlist(product) {
+      const wishlistItem = {
+        product,
+      };
+
+      // Dispatch the addToWishlist action with the wishlistItem
+      this.$store.dispatch("addToWishlist", wishlistItem);
+
+      // Save the updated wishlist to the server
+      ProductService.saveWishlist(this.$store.getters.wishlist)
+        .then((response) => {
+          console.log("Product added to the wishlist", response);
+        })
+        .catch((error) => {
+          console.error("Error saving wishlist:", error);
+        });
     },
+
     show() {
       console.log(this.listProducts);
     },
