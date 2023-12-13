@@ -39,11 +39,16 @@
               >
                 <img
                   id="image-product"
-                  :src="product.colors[product.selected].imageUrl"
+                  :src="
+                    require(`../assets/${
+                      product.colors[product.selected].imageUrl
+                    }`)
+                  "
                   class="card-img-top"
                   :class="{
                     'image-disabled':
-                      product.colors[product.selected].quantity === 0,
+                      product.colors[product.selected].inStock ===
+                      product.colors[product.selected].quantity,
                   }"
                   alt="..."
                 />
@@ -68,7 +73,10 @@
                 <button
                   class="btn btn-primary ms-1"
                   @click="addToCart(product)"
-                  :disabled="product.colors[0].quantity === 0"
+                  :disabled="
+                    product.colors[product.selected].inStock ===
+                    product.colors[product.selected].quantity
+                  "
                 >
                   Add
                 </button>
@@ -121,15 +129,19 @@ export default {
   },
   async created() {
     try {
-      const response = await ProductService.getProducts();
-      this.products = response.data;
+      await ProductService.getProducts().then((response) => {
+        console.log("akram");
+        console.log(response.data);
+        this.products = response.data;
+        // for (let i = 0; i < this.products.length; i++) {
+        //   for (let j = 0; j < this.products[i].colors.length; j++) {
+        //     console.log(this.products[i].colors[j].imageUrl);
+        //     this.products[i].colors[j].imageUrl = require("../assets/" +
+        //       this.products[i].colors[j].imageUrl);
+        //   }
+        // }
+      });
 
-      for (let i = 0; i < this.products.length; i++) {
-        for (let j = 0; j < this.products[i].colors.length; j++) {
-          this.products[i].colors[j].imageUrl = require("../assets/" +
-            this.products[i].colors[j].imageUrl);
-        }
-      }
       console.log(this.products);
     } catch (error) {
       console.error(error);
@@ -159,6 +171,9 @@ export default {
   },
   methods: {
     ...mapMutations(["setFavorite"]),
+    getImagePath(product) {
+      return import(`../assets/${product.colors[product.selected].imageUrl}`);
+    },
     addfavorite(product) {
       this.setFavorite(product);
     },
@@ -186,9 +201,9 @@ export default {
       const index = productList.findIndex((p) => p.id === product.id);
       if (index === -1) {
         productList.push(product);
-        console.log("Product added to the cart");
+        alert("product added to cart");
       } else {
-        console.log("Product already in the cart");
+        alert("product already in cart");
       }
       localStorage.setItem("products", JSON.stringify(productList));
       console.log("Cart length:", productList.length);
@@ -205,12 +220,14 @@ export default {
 .product-description {
   height: 50% !important;
 }
+
 .container {
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: left;
 }
+
 .nav-products {
   align-self: flex-start;
   text-align: center;
@@ -225,19 +242,23 @@ export default {
   justify-content: center;
   justify-content: space-evenly;
 }
+
 .color {
   width: 30px;
   height: 30px;
   border: 1px solid grey;
   border-radius: 50%;
 }
+
 .link-products {
   display: flex;
   justify-content: center;
-  align-items: center; /* Center items vertically */
+  align-items: center;
+  /* Center items vertically */
   flex-direction: column;
   width: 100%;
 }
+
 .link-products div {
   border: 1px solid black;
   margin-top: 10px;
@@ -245,15 +266,18 @@ export default {
   width: 70%;
   text-align: center;
 }
+
 .link-products div:hover {
   background-color: #0c9cda;
   color: white;
   border: 1px solid white;
   cursor: pointer;
 }
+
 .clothy {
   flex-wrap: wrap;
 }
+
 .row-cols-md-2 {
   display: flex;
   flex-wrap: wrap;
@@ -284,9 +308,11 @@ export default {
   border-radius: 5px;
   height: 40% !important;
 }
+
 .product {
   height: 350px;
 }
+
 .card-body {
   padding: 15px;
 }
@@ -330,9 +356,11 @@ export default {
 .btn-danger:hover {
   background-color: #dc3545;
 }
+
 h5 {
   font-size: 15px;
 }
+
 .image-disabled {
   filter: grayscale(100%);
   opacity: 0.7;

@@ -1,5 +1,5 @@
 <template>
-  <div class="footer-dark mt-5">
+  <div class="footer-dark mt-5 footer">
     <footer>
       <div class="container">
         <div class="row">
@@ -22,12 +22,12 @@
           <div class="col-md-6 item text">
             <h3>Web projet</h3>
             <p style="color: white">
-              Le projet CRUD de Gestion des étudiants est une application web
-              développée en utilisant JavaScript (JS) qui permet de gérer
-              facilement les informations des étudiants. Avec cette application,
-              les utilisateurs peuvent créer de nouveaux profils étudiants,
-              afficher les détails des étudiants existants, mettre à jour les
-              informations et supprimer des profils d'étudiants.
+              "Explore the world of style with Trendify Mode's footer, your
+              gateway to the latest trends and timeless fashion. Discover
+              curated collections, stay updated on fashion news, and indulge in
+              a diverse range of clothing and accessories. Join us in embracing
+              the spirit of fashion and expressing your unique style. Step into
+              Trendify Mode – where trends meet individuality
             </p>
           </div>
           <div class="col item social">
@@ -71,7 +71,6 @@ export default {
   font-size: 14px;
   margin-bottom: 0;
 }
-
 .footer-dark ul a {
   color: inherit;
   text-decoration: none;

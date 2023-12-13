@@ -28,7 +28,11 @@
                     >
                       <div class="col-md-2 col-lg-2 col-xl-2">
                         <img
-                          :src="product.colors[product.selected].imageUrl"
+                          :src="
+                            require(`../assets/${
+                              product.colors[product.selected].imageUrl
+                            }`)
+                          "
                           class="img-fluid rounded-3"
                           alt="Cotton T-shirt"
                         />
@@ -187,7 +191,7 @@
                     </div>
 
                     <button
-                      @click="generatePDF()"
+                      @click="addfactures(), generatePDF()"
                       type="button"
                       class="btn btn-dark btn-block btn-lg"
                       data-mdb-ripple-color="dark"
@@ -208,11 +212,12 @@
 <script>
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
+import ProductServices from "@/services/ProductService";
 export default {
   name: "CartPurchase",
   data() {
     return {
-      heading: "Your Tredify Mode Here", // Provide your actual heading
+      heading: "Your Tredify Mode Here",
     };
   },
   props: {
@@ -237,6 +242,15 @@ export default {
     },
   },
   methods: {
+    addfactures() {
+      let p = this.cart;
+      const tab = localStorage.getItem("facture")
+        ? JSON.parse(localStorage.getItem("facture"))
+        : [];
+      tab.push(this.cart);
+      localStorage.setItem("facture", JSON.stringify(tab));
+      console.log(p);
+    },
     incrementquantity(product) {
       this.$emit("increment-quantity", product.id);
     },
@@ -265,8 +279,21 @@ export default {
           body: [[name, quantity, val]],
         });
       });
-      localStorage.clear();
+      this.updatequantity(this.cart);
+      let cart = null;
+      localStorage.setItem("products", JSON.stringify(cart));
       doc.save(`${Math.random()}.pdf`);
+    },
+    updatequantity(cart) {
+      let list = cart;
+      if (!list) {
+        return;
+      }
+      for (let i = 0; i < list.length; i++) {
+        ProductServices.updateProduct(list[i].id, list[i]).then((res) => {
+          console.log(res);
+        });
+      }
     },
   },
 };

@@ -26,7 +26,7 @@
           aria-controls="profile-tab-pane"
           aria-selected="false"
         >
-          saved events
+          My Reviews
         </button>
       </li>
       <li class="nav-item links" role="presentation">
@@ -99,7 +99,9 @@
                               <div class="col-md-2 col-lg-2 col-xl-2">
                                 <img
                                   :src="
-                                    product.colors[product.selected].imageUrl
+                                    require(`../assets/${
+                                      product.colors[product.selected].imageUrl
+                                    }`)
                                   "
                                   class="img-fluid rounded-3"
                                   alt="Cotton T-shirt"
@@ -122,7 +124,10 @@
                                 "
                               >
                                 <h6 class="mt-2">{{ product.price }}$</h6>
-                                <button class="ms-2 btn btn-danger px-2">
+                                <button
+                                  class="ms-2 btn btn-danger px-2"
+                                  @click="deletefavorite(product.id)"
+                                >
                                   <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="16"
@@ -171,7 +176,6 @@
             </div>
           </div>
         </div>
-        /**** */ */
       </div>
       <div
         class="tab-pane fade"
@@ -180,12 +184,7 @@
         aria-labelledby="profile-tab"
         tabindex="0"
       >
-        <table class="table table-info table-hover">
-          <tr></tr>
-          <tr></tr>
-          <tr></tr>
-          <tr></tr>
-        </table>
+        {{ reviews }}
       </div>
       <div
         class="tab-pane fade"
@@ -194,26 +193,44 @@
         aria-labelledby="contact-tab"
         tabindex="0"
       >
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique,
-        repudiandae labore laboriosam veniam assumenda corrupti neque enim at
-        suscipit itaque, praesentium vero incidunt expedita explicabo sit fugiat
-        eius nostrum hic.
+        <factureComponent :facture="facture"></factureComponent>
       </div>
     </div>
   </div>
+  <footercomponent />
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-
+import { mapMutations } from "vuex";
+import factureComponent from "@/components/facture.vue";
+import footercomponent from "@/components/Footer.vue";
 export default {
   name: "ProfileView",
-
+  components: { factureComponent, footercomponent },
   computed: {
-    ...mapGetters(["getWishlist","getfacture"]),
+    ...mapGetters(["getWishlist", "getfacture", "getreviews"]),
+    reviews() {
+      console.log(this.getreviews);
+      return this.getreviews;
+    },
     items() {
       console.log(this.getWishlist);
       return this.getWishlist.length;
+    },
+    facture() {
+      const tab = localStorage.getItem("facture")
+        ? JSON.parse(localStorage.getItem("facture"))
+        : [];
+      console.log("hhhh");
+      console.log(tab);
+      return tab;
+    },
+  },
+  methods: {
+    ...mapMutations(["removefavorite"]),
+    deletefavorite(id) {
+      this.removefavorite(id);
     },
   },
 };

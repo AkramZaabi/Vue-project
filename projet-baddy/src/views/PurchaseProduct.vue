@@ -36,7 +36,7 @@ export default {
   },
   methods: {
     updatecart() {
-      localStorage.setItem("product", this.cart);
+      localStorage.setItem("product", JSON.stringify(this.cart));
     },
     addquantity(id) {
       for (let i = 0; i < this.cart.length; i++) {

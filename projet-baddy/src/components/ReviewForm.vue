@@ -95,8 +95,8 @@
 </template>
 
 <script>
-import axios from "axios";
-
+import ProductService from "@/services/ProductService";
+import { mapMutations } from "vuex";
 export default {
   created() {
     this.fetchReviews();
@@ -111,6 +111,7 @@ export default {
     };
   },
   methods: {
+    ...mapMutations(["addreview"]),
     onSubmitReview() {
       const productReview = {
         name: this.name,
@@ -118,9 +119,8 @@ export default {
         review: this.review,
         rating: this.rating,
       };
-
-      axios
-        .post("http://localhost:3000/reviews", productReview)
+      this.addreview(productReview);
+      ProductService.addReview(productReview)
         .then((response) => {
           console.log(response.data);
           this.$emit("review-sent", productReview);
@@ -132,8 +132,7 @@ export default {
         });
     },
     fetchReviews() {
-      axios
-        .get("http://localhost:3000/reviews")
+      ProductService.getReviews()
         .then((response) => {
           this.reviews = response.data;
         })

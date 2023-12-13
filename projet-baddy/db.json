@@ -17,19 +17,19 @@
           "name": "Blue and Green",
           "imageUrl": "Free_T-Shirt_Mockup_2.png",
           "quantity": 3,
-          "inStock": 3
+          "inStock": 0
         },
         {
           "name": "Blue",
           "imageUrl": "Free_T-Shirt_Mockup_3.png",
           "quantity": 4,
-          "inStock": 4
+          "inStock": 0
         },
         {
           "name": "Black",
           "imageUrl": "Free_T-Shirt_Mockup_4.png",
           "quantity": 3,
-          "inStock": 3
+          "inStock": 0
         }
       ],
       "category": "T-shirts"
@@ -39,19 +39,19 @@
       "name": "Sweatshirt Super Mario",
       "description": "Capuche avec la photo de Mario",
       "price": 120,
-      "selected": 0,
+      "selected": 2,
       "colors": [
         {
           "name": "Black",
           "imageUrl": "Free_Sweatshirt_Mockup_1.png",
           "quantity": 5,
-          "inStock": 5
+          "inStock": 0
         },
         {
           "name": "Green",
           "imageUrl": "Free_Sweatshirt_Mockup_2.png",
           "quantity": 3,
-          "inStock": 3
+          "inStock": 0
         },
         {
           "name": "Blue",
@@ -63,7 +63,7 @@
           "name": "Green and Blue",
           "imageUrl": "Free_Sweatshirt_Mockup_4.png",
           "quantity": 3,
-          "inStock": 3
+          "inStock": 0
         }
       ],
       "category": "Sweatshirts"
@@ -85,13 +85,13 @@
           "name": "Black",
           "imageUrl": "wepik-export-20231130153236pBWo-removebg-preview.png",
           "quantity": 3,
-          "inStock": 3
+          "inStock": 0
         },
         {
           "name": "Purple",
           "imageUrl": "wepik-export-202311301533220JYe-removebg-preview.png",
           "quantity": 4,
-          "inStock": 4
+          "inStock": 0
         }
       ],
       "category": "Pants"
@@ -113,13 +113,13 @@
           "name": "Green",
           "imageUrl": "wepik-export-202311301542190PSW-removebg-preview.png",
           "quantity": 3,
-          "inStock": 3
+          "inStock": 0
         },
         {
           "name": "Silver",
           "imageUrl": "wepik-export-20231130155202wYmn-removebg-preview.png",
           "quantity": 4,
-          "inStock": 4
+          "inStock": 0
         }
       ],
       "category": "Shoes"
@@ -135,7 +135,7 @@
           "name": "pink",
           "imageUrl": "pink_hoodie.png",
           "quantity": 5,
-          "inStock": 5
+          "inStock": 0
         }
       ],
       "category": "Hoodie"
@@ -151,83 +151,12 @@
           "name": "blue",
           "imageUrl": "blue_hoodie.png",
           "quantity": 5,
-          "inStock": 5
+          "inStock": 4
         }
       ],
       "category": "Hoodie"
     }
   ],
   "cart": [],
-  "reviews": [
-    {
-      "name": "Aziz",
-      "email": "grami.medaziz00@gmail.com",
-      "review": "great",
-      "rating": "5",
-      "id": 1
-    },
-    {
-      "name": "Akram",
-      "email": "akram@gmail.com",
-      "review": "very good website",
-      "rating": "4",
-      "id": 2
-    },
-    {
-      "name": "aaaa",
-      "email": "aaaa@gmail.com",
-      "review": "a",
-      "rating": "5",
-      "id": 3
-    },
-    {
-      "name": "aaa",
-      "email": "aaaaa@gmail.om",
-      "review": "aaaaaaaaa",
-      "rating": "3",
-      "id": 4
-    },
-    {
-      "name": "aaaa",
-      "email": "grami.medaziz00@gmail.com",
-      "review": "aaa",
-      "rating": "3",
-      "id": 5
-    },
-    {
-      "name": "",
-      "email": "aaaa@gmail.com",
-      "review": "a",
-      "rating": "4",
-      "id": 6
-    },
-    {
-      "name": "",
-      "email": "gggggggggg@gmail.com",
-      "review": "ggggggggg",
-      "rating": "5",
-      "id": 7
-    },
-    {
-      "name": "kkkk",
-      "email": "kk@gmail.com",
-      "review": "kkk",
-      "rating": "2",
-      "id": 8
-    },
-    {
-      "name": "mohamed",
-      "email": "mohamed@gmail.com",
-      "review": "Bon site",
-      "rating": "4",
-      "id": 9
-    },
-    {
-      "name": "raja",
-      "email": "raja@gmail.com",
-      "review": "best  second site ever",
-      "rating": "3",
-      "id": 10
-    }
-  ]
+  "reviews": []
 }
